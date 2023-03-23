@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>La meteo d'une  ville</title>
+
+  <style>
+		body {
+			background-color: #f2f2f2;
+			font-family: Arial, sans-serif;
+			color: #333;
+			margin: 0;
+			padding: 0;
+		}
+		h1 {
+			text-align: center;
+			margin-top: 50px;
+			color: #007bff;
+		}
+		form {
+			background-color: #fff;
+			padding: 20px;
+			border-radius: 5px;
+			box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+			margin: 50px auto;
+			width: 50%;
+		}
+		label {
+			display: block;
+			margin-bottom: 10px;
+			font-weight: bold;
+		}
+		input[type="text"] {
+			width: 90%;
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			margin-bottom: 20px;
+		}
+		input[type="submit"] {
+			background-color: #007bff;
+			color: #fff;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 5px;
+			cursor: pointer;
+			margin-right: 10px;
+		}
+		button {
+			background-color: #007bff;
+			color: #fff;
+			border: 1px solid #007bff;
+			padding: 10px 20px;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+		button:hover {
+			background-color: #007bff;
+			color: #fff;
+		}
+	</style>
+
+</head>
+<body background-image: url("C:\Users\Dell\Downloads\OIP.jpg");>
+  <h1>Bienvenu sur la meteo d'aujourd'hui </h1>
+  <form id="city-form">
+    <label for="city">Ville :</label>
+    <input type="text" id="city" name="city" required>
+    <button type="submit">chercher</button>
+  </form>
+  <div style="text-align: center;
+  margin-top: 50px;" id="weather-info"></div>
+
+  
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    ///extraire  les informations en utilisons le javascript : 
+    // Clé d'API OpenWeatherMap
+    const API_KEY = "c00a6c95df9986842059fe00f1e70084";
+
+    // Fonction pour récupérer la météo de ville et la date données pa l'utilisateur :
+    function getWeather(city) {
+      // URL pour interroger l'API OpenWeatherMap
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric&lang=fr`;
+
+      // Requête AJAX pour récupérer les données météo
+      $.get(url, function(data) {
+        // Récupération des informations de la réponse JSON
+        //obtenir la description 
+        const description = data.weather[0].description;
+        ///obtenir la temperature 
+        const temperature = data.main.temp;
+
+       ///Affichage des resultats 
+        const information = document.getElementById("weather-info");
+        information.innerHTML = `<p>Le temps à ${city}  : ${description}, température est : ${temperature}°C</p>`;
+      });
+    }
+
+    ///ajouter l'evennement submit pour detecter quand le forumlaire est soumis 
+    const cityForm = document.getElementById("city-form");
+    cityForm.addEventListener("submit", function(event) {
+      event.preventDefault();
+      const cityInput = document.getElementById("city");
+      const city = cityInput.value;
+      getWeather(city);
+    });
+  </script>
+</body>
+</html>
